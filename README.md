@@ -51,6 +51,7 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 
 > If macOS says the app is from an unidentified developer: right-click the file → **Open** → **Open** again in the dialog.
 
+ HEAD
  <Bold>Exeption:
 
 If working with the .dmg package
@@ -61,6 +62,8 @@ If working with the .dmg package
 If macOS says "App is damaged and can't be opened" error: 
 run xattr -cr /Applications/elab-agent 
 
+
+ 67b49986f869e0c0b0bfd5793b6b4f7409f7c89a
 ### Linux (AppImage)
 
 ```bash
