@@ -51,8 +51,8 @@ Working with the `.pkg` installation:
 > If macOS says the app is from an unidentified developer: 
 >right-click the file → **Open** → **Open** again in the dialog. 
 >
->If macOS says "Apple could not verify "elab-agent-*.pkg":
->Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("elab-agent-*.pkg was blocked to protect your Mac")
+>If macOS says "Apple could not verify "elab-agent-`*.pkg`":
+>Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("elab-agent-`*.pkg` was blocked to protect your Mac")
 
 Working with the `.dmg` installation:
 
