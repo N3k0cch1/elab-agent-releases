@@ -28,7 +28,7 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 | macOS (Intel) | `elab-agent-x.y.z-x64.pkg` | Older Intel Macs |
 | macOS (disk image) | `elab-agent-x.y.z-arm64.dmg` / `*-x64.dmg` | Drag to Applications |
 | Linux | `elab-agent-x.y.z-x64.AppImage` | Make executable, run |
-| Linux | `elab-agent-x.y.z-x64.deb` | `sudo dpkg -i *.deb` |
+| Linux | `elab-agent-x.y.z-x64.deb` | run dpkg to install |
 
 ---
 
@@ -49,11 +49,9 @@ Working with the `.pkg` installation:
 3. Open **elab-agent** from your Applications folder.
 
 > If macOS says the app is from an unidentified developer: 
->
 >right-click the file → **Open** → **Open** again in the dialog. 
 >
->If macOS says "Apple could not verify "elab-agent-*.pkg"
->
+>If macOS says "Apple could not verify "elab-agent-*.pkg":
 >Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("elab-agent-*.pkg was blocked to protect your Mac")
 
 Working with the `.dmg` installation:
