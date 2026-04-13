@@ -12,8 +12,9 @@ It comes in two flavours:
 
 | Edition | What you get |
 |---------|-------------|
-| **Full Version** | Word (.docx), PDF, images, live bench companion, AI tag suggestions |
-| **PDF Only** | PDF upload only — lighter install for community labs |
+| **PDF Only** | PDF upload only — useful for bulk upload without tweaking anything |
+| **Full Version** | Word (.docx), PDF, Images and Video upload, live bench companion |
+
 
 ---
 
@@ -169,7 +170,7 @@ The bench companion lets you capture live notes, photos, and videos from your ph
 
 ### Features
 
-- **Step timer** — each step shows a live elapsed time stopwatch.
+- **Stopwatch** — A stopwatch where you can time your reaction, add splits and laps (for timing each steps). 
 - **Photos & videos** — captured inline; iOS HEIC images are converted automatically.
 - **Offline mode** — if the network drops, an amber banner appears and notes are buffered until the connection is restored.
 - **Session duplication** — copy the step structure from a previous session to start a new one faster.
@@ -209,6 +210,8 @@ API keys are stored only in your browser's local storage and never sent to any s
 The **Create / Delete** tab lets you:
 
 - **Create** a new blank experiment entry manually (useful for setting up before a bench session).
+
+- **Delete** one entry using the searchbar 
 - **Bulk delete** — search your experiments, tick checkboxes, and delete several at once.
 
 ---
@@ -227,7 +230,7 @@ Click the **☾** button in the top-right corner of the nav bar to toggle dark m
 
 ## Advanced — AI tag suggestions
 
-If you have an [Anthropic](https://www.anthropic.com/) API key, elab-agent can suggest tags for each experiment entry. Enter the key in the setup wizard (Step 4) or via **Settings**. Tag suggestions appear inline in the review panel and can be accepted or dismissed.
+If you have an AI API key, elab-agent can suggest tags for each experiment entry. Enter the key in the setup wizard (Step 4) or via **Settings**. Tag suggestions appear inline in the review panel and can be accepted or dismissed.
 
 ---
 
@@ -238,21 +241,17 @@ If you have an [Anthropic](https://www.anthropic.com/) API key, elab-agent can s
 - Make sure your API key has not expired.
 - If you are on a VPN, confirm it is connected.
 
-### ChemDraw schematics are missing
-- EMF→PNG conversion requires LibreOffice or ImageMagick to be available. On the desktop app, these are bundled automatically.
-
-### The app opens but shows a blank screen
-- On Linux, try running with `--no-sandbox` if using the `.deb` package.
+### The app opens but shows a blank screen on Linux
+- Try running with `--no-sandbox` if using the `.deb` package.
 - Check the **Logs** button on the landing page for backend error messages.
-
-### Full Version PIN forgotten
-- The PIN is stored locally on this machine. You can reset it by deleting the `elab-agent-prefs` entry from your OS keychain / Electron user data store.
 
 ---
 
 ## About
 
-Built for daily use in a polymer chemistry lab.  
+Built for daily use in Nanotechnology and Polymer Chemistry laboratory, NAIST, Japan.
 Backend: Python (FastAPI + PyInstaller). Frontend: React + Vite. Desktop: Electron.
 
 [elabFTW](https://www.elabftw.net/) is open-source ELN software — this tool is an independent companion, not affiliated with the elabFTW project.
+
+Contact the owner in case of any bugs or reports. 
