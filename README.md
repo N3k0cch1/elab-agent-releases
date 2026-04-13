@@ -24,7 +24,6 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 | Platform | File | Notes |
 |----------|------|-------|
 | Windows | `elab-agent-x.y.z-x64-setup.exe` | Installer with wizard |
-| Windows (portable) | `elab-agent-x.y.z-x64-portable.exe` | No install needed — run from anywhere |
 | macOS (Apple Silicon) | `elab-agent-x.y.z-arm64.pkg` | M1/M2/M3 Macs |
 | macOS (Intel) | `elab-agent-x.y.z-x64.pkg` | Older Intel Macs |
 | macOS (disk image) | `elab-agent-x.y.z-arm64.dmg` / `*-x64.dmg` | Drag to Applications |
@@ -41,29 +40,32 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 2. The installer will show a progress bar — click **Install**, wait, then **Finish**.
 3. Find **elab-agent** in your Start Menu or on your Desktop.
 
-> Prefer no installation? The `-portable.exe` is a single file — no admin rights needed.
-
 ### macOS
+
+Working with the `.pkg` installation:
 
 1. Download the `.pkg` for your chip (arm64 = Apple Silicon, x64 = Intel).
 2. Double-click → click through the 3-step installer.
 3. Open **elab-agent** from your Applications folder.
 
-> If macOS says the app is from an unidentified developer: right-click the file → **Open** → **Open** again in the dialog.
+> If macOS says the app is from an unidentified developer: 
+>
+>right-click the file → **Open** → **Open** again in the dialog. 
+>
+>If macOS says "Apple could not verify "elab-agent-*.pkg"
+>
+>Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("elab-agent-*.pkg was blocked to protect your Mac")
 
- HEAD
- <Bold>Exeption:
+Working with the `.dmg` installation:
 
-If working with the .dmg package
  1. Mount the image
  2. Drag and place the elab-agent into the /Application folder
  3. Find **elab-agent** in your Start Menu or on your Desktop.
 
-If macOS says "App is damaged and can't be opened" error: 
-run xattr -cr /Applications/elab-agent 
+>If macOS says "App is damaged and can't be opened" error: 
+>
+>run xattr -cr /Applications/elab-agent 
 
-
- 67b49986f869e0c0b0bfd5793b6b4f7409f7c89a
 ### Linux (AppImage)
 
 ```bash
