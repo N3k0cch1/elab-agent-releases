@@ -6,15 +6,14 @@ A desktop companion for [elabFTW](https://www.elabftw.net/) — upload experimen
 
 ## What it does
 
-**elab-agent** sits between your raw experiment files and your elabFTW electronic lab notebook. Drop a Word document, a PDF, or a batch of images; the app parses them, detects experiment IDs, shows you a preview, and uploads everything to the right elabFTW entries in the correct order.
+**elab-agent** sits between your raw experiment files and your elabFTW electronic lab notebook. Drop a Word document, a PDF, a batch of images, or any other file; the app parses documents, detects experiment IDs, shows you a preview, and uploads everything to the right elabFTW entries in the correct order.
 
-It comes in two flavours:
+It comes in two editions:
 
 | Edition | What you get |
 |---------|-------------|
-| **PDF Only** | PDF upload only — useful for bulk upload without tweaking anything |
-| **Full Version** | Word (.docx), PDF, Images and Video upload, live bench companion |
-
+| **Upload Only** | Word, PDF, and image upload — useful for shared lab installs |
+| **Full Version** | Everything in Upload Only, plus: arbitrary file attach, live bench companion, experiment creation and deletion |
 
 ---
 
@@ -49,21 +48,23 @@ Working with the `.pkg` installation:
 2. Double-click → click through the 3-step installer.
 3. Open **elab-agent** from your Applications folder.
 
-> If macOS says the app is from an unidentified developer: 
->right-click the file → **Open** → **Open** again in the dialog. 
+> If macOS says the app is from an unidentified developer:
+> right-click the file → **Open** → **Open** again in the dialog.
 >
->If macOS says "Apple could not verify "`elab-agent-*.pkg`":
->Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("`elab-agent-*.pkg` was blocked to protect your Mac")
+> If macOS says "Apple could not verify "`elab-agent-*.pkg`":
+> Click **Done** → Open **System Settings** → Go to **Privacy & Security** → Go down to **Security** → Click to **Open Anyway** ("`elab-agent-*.pkg` was blocked to protect your Mac")
 
 Working with the `.dmg` installation:
 
- 1. Mount the image
- 2. Drag and place the elab-agent into the /Application folder
- 3. Find **elab-agent** in your Start Menu or on your Desktop.
+1. Mount the image.
+2. Drag and place the elab-agent into the `/Applications` folder.
+3. Open **elab-agent** from your Applications folder.
 
->If macOS says "App is damaged and can't be opened" error: 
+> If macOS says "App is damaged and can't be opened":
 >
->run xattr -cr /Applications/elab-agent 
+> ```bash
+> xattr -cr /Applications/elab-agent.app
+> ```
 
 ### Linux (AppImage)
 
@@ -86,8 +87,10 @@ elab-agent
 
 When you first open elab-agent you will see the launcher:
 
-- **PDF Only** — starts the app in community mode (PDF uploads only). Good for labs with a shared install.
+- **Upload Only** — starts the app in community mode (Word, PDF, and image upload). Good for labs with a shared install.
 - **Full Version** — starts with all features. Can be PIN-protected so only authorised users access it.
+
+Once a mode is started, the **switch** button in the top-left corner of the landing page lets you return to the launcher to change modes.
 
 ![Launcher screen](screenshots/launcher.png)
 
@@ -108,9 +111,15 @@ Your settings are saved locally. You can reconfigure at any time via **Settings 
 
 ---
 
+## Resource category
+
+The resource category determines which template is used when creating a linked resource entry. Your active category is shown on the landing page. Click **change** next to it to pick a different one from the list fetched from your elabFTW server — the change takes effect immediately for all subsequent uploads without requiring a full reconfigure.
+
+---
+
 ## Uploading files
 
-### Word (.docx) — Full Version only
+### Word (.docx)
 
 Drop a Word document onto the upload zone. elab-agent splits it into pages at section breaks, detects the experiment ID on each page, and extracts ChemDraw schematics automatically.
 
@@ -137,6 +146,15 @@ Drop a PDF. Each page is rendered as an image, experiment IDs are detected, and 
 ### Images
 
 Drop one or more images (JPG, PNG, TIFF, WEBP, HEIC). Each image is matched to an experiment entry. Images go to the resource entry, not the experiment body.
+
+### Extra files — Full Version only
+
+After uploading a Word or PDF document (or by dropping any unrecognised file), the **Upload extra files** panel appears. Use it to attach arbitrary files (raw data, spectra, spreadsheets, etc.) directly to an experiment's resource entry without parsing or preview.
+
+- **Link to existing** — search for an experiment by ID or title and attach files to its resource.
+- **Create new** — create a new experiment entry and attach the files in one step.
+
+A per-file progress bar tracks each upload. Partially failed batches show which files failed with a **↺ Retry failed** button.
 
 ### Batch uploads
 
@@ -170,10 +188,9 @@ The bench companion lets you capture live notes, photos, and videos from your ph
 
 ### Features
 
-- **Stopwatch** — A stopwatch where you can time your reaction, add splits and laps (for timing each steps). 
+- **Stopwatch** — time your reaction, add splits and laps to track each step.
 - **Photos & videos** — captured inline; iOS HEIC images are converted automatically.
 - **Offline mode** — if the network drops, an amber banner appears and notes are buffered until the connection is restored.
-- **Session duplication** — copy the step structure from a previous session to start a new one faster.
 - **Upload** — when the experiment is done, tap **Upload to elabFTW** from the desktop app.
 
 ---
@@ -182,7 +199,7 @@ The bench companion lets you capture live notes, photos, and videos from your ph
 
 The **History** tab keeps a log of everything uploaded this session:
 
-- **Uploads** — files sent to elabFTW with status (success / failed).
+- **Uploads** — files sent to elabFTW with status (success / failed), including extra file uploads.
 - **Created** — entries created via the manual creation tool.
 - **Deleted** — entries deleted via the bulk delete tool.
 - **Bench** — bench sessions uploaded.
@@ -210,8 +227,7 @@ API keys are stored only in your browser's local storage and never sent to any s
 The **Create / Delete** tab lets you:
 
 - **Create** a new blank experiment entry manually (useful for setting up before a bench session).
-
-- **Delete** one entry using the searchbar 
+- **Delete** one entry using the searchbar.
 - **Bulk delete** — search your experiments, tick checkboxes, and delete several at once.
 
 ---
@@ -219,6 +235,12 @@ The **Create / Delete** tab lets you:
 ## Template selection
 
 Each upload session can use a different elabFTW template. Click the **Template** dropdown in the review panel header to switch. Click the **👁** (eye) button next to a template to preview its content before selecting it.
+
+---
+
+## User identity
+
+After entering your API key, your name is displayed in the navigation bar. This confirms which elabFTW account is active and that your key has the correct team membership.
 
 ---
 
@@ -230,7 +252,7 @@ Click the **☾** button in the top-right corner of the nav bar to toggle dark m
 
 ## Advanced — AI tag suggestions
 
-If you have an AI API key, elab-agent can suggest tags for each experiment entry. Enter the key in the setup wizard (Step 4) or via **Settings**. Tag suggestions appear inline in the review panel and can be accepted or dismissed.
+If you have an Anthropic API key, elab-agent can suggest tags for each experiment entry. Enter the key in the setup wizard or via **Settings**. Tag suggestions appear inline in the review panel and can be accepted or dismissed.
 
 ---
 
@@ -249,9 +271,9 @@ If you have an AI API key, elab-agent can suggest tags for each experiment entry
 
 ## About
 
-Built for daily use in Nanotechnology and Polymer Chemistry laboratory, NAIST, Japan.
+Built for daily use in the Nanomaterials and Polymer Chemistry Lab, NAIST, Japan.
 Backend: Python (FastAPI + PyInstaller). Frontend: React + Vite. Desktop: Electron.
 
 [elabFTW](https://www.elabftw.net/) is open-source ELN software — this tool is an independent companion, not affiliated with the elabFTW project.
 
-Contact the owner in case of any bugs or reports. 
+Contact the owner for any bugs or reports.
