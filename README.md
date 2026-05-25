@@ -301,84 +301,9 @@ Click the pill to open a popup with the server URL, version, last sync time, the
 
 ## Report a bug
 
-Click **Report a bug** in the title bar (the small life-buoy icon next to the dark-mode toggle). Type what happened, optionally attach the recent backend log, and **Send report**. The report is forwarded to the maintainer's private GitHub issue tracker — the in-app dialog shows a tracking ID on success.
+Click **Report a bug** in the title bar (the small life-buoy icon next to the dark-mode toggle). Type what happened, optionally attach the recent backend log, and **Send report**. 
 
-If the maintainer's relay is unreachable (no network, expired token, forked install) the report is kept locally in `data/feedback.jsonl` so it isn't lost.
-
----
-
-## Development quick-start
-
-**Toolchain:** Python 3.11+ and **Node 22 LTS** (the repo pins `.nvmrc` to `22`; the frontend requires Node ≥ 20.19 for Vite 8 / Vitest 4). With `nvm`: `nvm use` picks up `.nvmrc`.
-
-```bash
-# 0. Match the pinned Node version (nvm)
-nvm install && nvm use     # reads .nvmrc → Node 22
-
-# 1. Clone and enter the repo
-git clone <repo-url> && cd elab-agent
-
-# 2. Python backend (runs on port 3000)
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-./start.sh
-
-# 3. Frontend hot-reload (port 5173, proxies API to :3000)
-cd frontend && npm install && npm run dev
-
-# 4. Full checks before committing
-./scripts/check.sh          # pytest + bandit + pip-audit
-cd frontend && npm run lint && npm run test
-
-# 5. Desktop build
-bash build-desktop.sh       # Linux AppImage + .deb (requires build deps)
-
-# 6. Electron-builder targets (npm scripts; require a prior PyInstaller bundle)
-npm run electron            # launch the Electron app against an existing build
-npm run electron:dev        # launch with ELECTRON_DEV=1 (hot-reloads against the Vite dev server)
-npm run dist:linux          # electron-builder → AppImage + .deb
-npm run dist:win            # electron-builder → NSIS + portable .exe (cross-platform)
-npm run dist:mac            # electron-builder → DMG + zip (macOS only)
-npm run dist:all            # all three targets in one go; macOS slice still macOS-only
-```
-
-Cross-platform notes for `dist:win`/`dist:mac` live in `.claude/skills/electron.md`.
-
-For CSS-cleanup PRs that need a visual regression baseline, the repo ships
-`frontend/scripts/capture-themes.mjs` (Playwright + headless Chromium). With a
-dev server running it writes 24 PNGs covering 4 reachable pages × 3 themes ×
-2 modes — run before and after a CSS edit and `md5sum` the two folders.
-Screenshots are gitignored.
-
-Optional env vars (set in `.env` for dev, or in the build environment for distributed binaries):
-
-| Variable | Purpose |
-|----------|---------|
-| `ELAB_SERVER_URL` | elabFTW base URL (also configurable via the in-app setup wizard) |
-| `ANTHROPIC_API_KEY` | enables AI tag suggestions |
-| `FEEDBACK_GITHUB_PAT` | fine-grained PAT (`Issues: write` on one private repo) — bug-report sink. Omit to keep reports local-only in `data/feedback.jsonl`. |
-| `FEEDBACK_GITHUB_REPO` | override the default feedback repo (`N3k0cch1/elab-agent-feedback`) |
-| `EDITION` | `full` (default) or `upload_only`. Legacy `personal`/`community` values are auto-migrated. |
-
-### Architecture
-
-```
-elab-agent/
-├── backend/           FastAPI server — all elabFTW API calls, parsers, AI enrichment
-│   ├── main.py        Route definitions (thin layer — no business logic)
-│   ├── elab_client.py All outbound elabFTW HTTP calls (httpx, async, retry)
-│   ├── parsers/       Word / PDF parsing, upload session store
-│   └── enrichment.py  Anthropic tag suggestions
-├── frontend/          React + Vite SPA
-│   └── src/
-│       ├── components/ ReviewPanel, PDFReviewPanel, ExperimentDropdown, …
-│       ├── context/   AppConfigContext, HistoryContext
-│       └── pages/     LandingPage, BenchPage, HistoryPage, …
-├── electron/          Desktop wrapper (main.js + preload.js)
-└── tests/             pytest suite (300+ tests; see `.claude/skills/tester-agent.md` for live counts)
-```
-
-Key architecture decisions are documented in [DECISIONS.md](DECISIONS.md).
+The report is kept locally in `data/feedback.jsonl` so it isn't lost.
 
 ---
 
