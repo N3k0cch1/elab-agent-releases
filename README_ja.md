@@ -24,11 +24,12 @@
 | プラットフォーム | ファイル | 備考 |
 |--------------|------|------|
 | Windows | `elab-agent-x.y.z-x64-setup.exe` | インストーラー |
-| macOS (Apple Silicon) | `elab-agent-x.y.z-arm64.pkg` | M1/M2/M3 Mac |
-| macOS (Intel) | `elab-agent-x.y.z-x64.pkg` | Intel Mac |
-| macOS (ディスクイメージ) | `elab-agent-x.y.z-arm64.dmg` / `*-x64.dmg` | Applications フォルダにドラッグ |
-| Linux | `elab-agent-x.y.z-x64.AppImage` | 実行権限を付与して起動 |
-| Linux | `elab-agent-x.y.z-x64.deb` | dpkg でインストール |
+| macOS (Apple Silicon) | `elab-agent-x.y.z-arm64.pkg` | M1/M2/M3+ Mac |
+| macOS (ディスクイメージ) | `elab-agent-x.y.z-arm64.dmg` | Applications フォルダにドラッグ |
+| Linux | `elab-agent-x.y.z-x86_64.AppImage` | 実行権限を付与して起動 |
+| Linux | `elab-agent-x.y.z-amd64.deb` | dpkg でインストール |
+
+> **macOS は v2.5.0 以降 Apple Silicon (arm64) 専用** です。Intel (`x64`) ビルドは提供されません。Intel Mac 向けのネイティブパッケージはありません。
 
 ---
 
@@ -44,7 +45,7 @@
 
 `.pkg` を使う場合:
 
-1. チップに合った `.pkg` をダウンロードします（arm64 = Apple Silicon、x64 = Intel）。
+1. `arm64` の `.pkg`（Apple Silicon — M1/M2/M3+）をダウンロードします。
 2. ダブルクリックして 3 ステップのインストーラーを進めます。
 3. Applications フォルダから **elab-agent** を開きます。
 
@@ -80,6 +81,20 @@ sudo dpkg -i elab-agent-*.deb
 # アプリケーションメニューから起動するか:
 elab-agent
 ```
+
+---
+
+## 更新（アップデート）
+
+**v2.5.2** 以降、デスクトップアプリは起動時にリリースフィードを確認し、新しいバージョンがあるとアプリ内にバナーを表示します。
+
+- **Windows（インストーラー）** と **Linux（AppImage）** — アップデートをダウンロードしてその場でインストールし、アプリを再起動します。
+- **Linux（`.deb`）** — その場での更新には未対応です。バナーから最新リリースのページを開き、手動でインストールしてください。
+- **macOS** — 現在ビルドは未署名のため、ダウンロードは行われますが、Gatekeeper により手動で開く必要がある場合があります（上記の macOS の注意を参照）。
+
+最新ビルドは [Releases](../../releases) ページからいつでも直接ダウンロードできます。
+
+> v2.5.0 以前のリリースには更新フィードが含まれていなかったため、自動更新は **v2.5.2 以降** で利用できます（v2.5.1 は公開されていません）。
 
 ---
 

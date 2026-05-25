@@ -8,10 +8,10 @@ A desktop companion for [elabFTW](https://www.elabftw.net/) — upload experimen
 
 **elab-agent** sits between your raw experiment files and your elabFTW electronic lab notebook. Drop a Word document, a PDF, a batch of images, or any other file; the app parses documents, detects experiment IDs, shows you a preview, and uploads everything to the right elabFTW entries in the correct order.
 
-It comes in two editions:
+A single download — pick a mode from the launcher every time you open it:
 
-| Edition | What you get |
-|---------|-------------|
+| Mode | What you get |
+|------|-------------|
 | **Upload Only** | Word, PDF, and image upload — useful for shared lab installs |
 | **Full Version** | Everything in Upload Only, plus: arbitrary file attach, live bench companion, experiment creation and deletion |
 
@@ -24,11 +24,12 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 | Platform | File | Notes |
 |----------|------|-------|
 | Windows | `elab-agent-x.y.z-x64-setup.exe` | Installer with wizard |
-| macOS (Apple Silicon) | `elab-agent-x.y.z-arm64.pkg` | M1/M2/M3 Macs |
-| macOS (Intel) | `elab-agent-x.y.z-x64.pkg` | Older Intel Macs |
-| macOS (disk image) | `elab-agent-x.y.z-arm64.dmg` / `*-x64.dmg` | Drag to Applications |
-| Linux | `elab-agent-x.y.z-x64.AppImage` | Make executable, run |
-| Linux | `elab-agent-x.y.z-x64.deb` | run dpkg to install |
+| macOS (Apple Silicon) | `elab-agent-x.y.z-arm64.pkg` | M1/M2/M3+ Macs |
+| macOS (disk image) | `elab-agent-x.y.z-arm64.dmg` | Drag to Applications |
+| Linux | `elab-agent-x.y.z-x86_64.AppImage` | Make executable, run |
+| Linux | `elab-agent-x.y.z-amd64.deb` | run dpkg to install |
+
+> **macOS is Apple-Silicon-only** (arm64) as of v2.5.0 — there is no Intel (`x64`) build. Intel Macs are not supported by a native package.
 
 ---
 
@@ -44,7 +45,7 @@ Go to the [**Releases**](../../releases) page and grab the file for your platfor
 
 Working with the `.pkg` installation:
 
-1. Download the `.pkg` for your chip (arm64 = Apple Silicon, x64 = Intel).
+1. Download the `arm64` `.pkg` (Apple Silicon — M1/M2/M3+).
 2. Double-click → click through the 3-step installer.
 3. Open **elab-agent** from your Applications folder.
 
@@ -83,16 +84,28 @@ elab-agent
 
 ---
 
+## Updating
+
+From **v2.5.2** the desktop app checks the releases feed on launch and shows an in-app banner when a newer version is available:
+
+- **Windows (installer)** and **Linux (AppImage)** — the update downloads and installs in place, then the app restarts.
+- **Linux (`.deb`)** — in-place update isn't supported; the banner links you to the latest release to install manually.
+- **macOS** — builds are currently unsigned, so the update downloads but Gatekeeper may require you to open it manually (see the macOS notes above).
+
+You can always download the newest build directly from the [Releases](../../releases) page.
+
+> Earlier releases (≤ v2.5.0) shipped without an update feed, so auto-update first becomes available **from v2.5.2 onward** (v2.5.1 was never published).
+
+---
+
 ## First launch — mode selection
 
 When you first open elab-agent you will see the launcher:
 
-- **Upload Only** — starts the app in community mode (Word, PDF, and image upload). Good for labs with a shared install.
-- **Full Version** — starts with all features. Can be PIN-protected so only authorised users access it.
+- **Upload Only** — Word, PDF, and image upload. Good for labs with a shared install where bench-mode capture isn't needed.
+- **Full Version** — all features, including the bench companion and experiment creation/deletion tools.
 
 Once a mode is started, the **switch** button in the top-left corner of the landing page lets you return to the launcher to change modes.
-
-![Launcher screen](screenshots/launcher.png)
 
 ---
 
@@ -106,8 +119,6 @@ The first time you pick a mode, a setup wizard walks you through four steps:
 4. **Markers** *(optional)* — set start/end keywords used to group pages in PDF notebooks.
 
 Your settings are saved locally. You can reconfigure at any time via **Settings → Reconfigure**.
-
-![Setup wizard](screenshots/setup-wizard.png)
 
 ---
 
@@ -126,12 +137,10 @@ Drop a Word document onto the upload zone. elab-agent splits it into pages at se
 You get a page-by-page preview with:
 - Detected ID (editable if wrong)
 - Skip toggle to exclude pages you don't want to upload
-- Duplicate warning if the ID already exists in elabFTW
+- Duplicate warning if the ID already exists in elabFTW; click **Compare with existing** to see a side-by-side diff of the existing elabFTW body vs the new one before uploading
 - AI tag suggestions (if an Anthropic API key is configured)
 
 Click **Upload all** or use keyboard shortcut `Ctrl+Enter` to upload everything at once.
-
-![Word upload review](screenshots/word-review.png)
 
 ### PDF
 
@@ -141,11 +150,11 @@ Drop a PDF. Each page is rendered as an image, experiment IDs are detected, and 
 - **Drag to reorder** — drag cards to change the upload order.
 - **Per-card upload** — upload individual entries without uploading the entire batch.
 
-![PDF review panel](screenshots/pdf-review.png)
-
 ### Images
 
 Drop one or more images (JPG, PNG, TIFF, WEBP, HEIC). Each image is matched to an experiment entry. Images go to the resource entry, not the experiment body.
+
+Each image card has an **✏ Annotate** button that opens a full-screen drawing tool — pen, arrow, eraser, 7 colours, undo, reset. The annotated PNG replaces the original in the upload queue.
 
 ### Extra files — Full Version only
 
@@ -184,14 +193,15 @@ The bench companion lets you capture live notes, photos, and videos from your ph
 2. On your phone, open a browser and navigate to the URL shown on the screen (e.g. `http://192.168.1.x:3000/bench`). No app install needed.
 3. Add steps as you go. Notes and photos are autosaved every 30 seconds.
 
-![Bench companion on mobile](screenshots/bench-mobile.png)
-
 ### Features
 
 - **Stopwatch** — time your reaction, add splits and laps to track each step.
 - **Photos & videos** — captured inline; iOS HEIC images are converted automatically.
 - **Offline mode** — if the network drops, an amber banner appears and notes are buffered until the connection is restored.
+- **Auto-recovery** — open sessions survive crashes and reloads; the app offers to resume on next launch.
+- **Duplicate detection** — entering an experiment ID that already exists warns you before you start recording into it.
 - **Upload** — when the experiment is done, tap **Upload to elabFTW** from the desktop app.
+- **PDF export** — closed sessions can be exported as a formatted PDF (header card, timeline, stopwatch table, embedded photos) from the History page.
 
 ---
 
@@ -244,9 +254,19 @@ After entering your API key, your name is displayed in the navigation bar. This 
 
 ---
 
-## Dark mode
+## Appearance — themes + dark mode
 
-Click the **☾** button in the top-right corner of the nav bar to toggle dark mode. Your preference is saved.
+Click the **☾ / ☀** button in the top-right corner of the nav bar to toggle dark mode. Your preference is saved.
+
+In **Settings → Appearance** you can also switch the visual theme:
+
+| Theme | Palette | Feel |
+|-------|---------|------|
+| **Warm Minimal** *(default)* | Coral · mint · lavender (warm triad) | Notebook-paper warm minimal |
+| **Cobalt Precision** | Cobalt blue · spring lime · dusty rose (cool triad) | Crisp, scientific, blue-dominant |
+| **Lab Companion** | Emerald · purple · amber (green-dominant triad) | Instrument readout, green-led vibe |
+
+Each theme has independent light and dark variants. The chosen theme propagates to the launcher, loading splash, and log viewer windows as well.
 
 ---
 
@@ -267,6 +287,99 @@ If you have an Anthropic API key, elab-agent can suggest tags for each experimen
 - Try running with `--no-sandbox` if using the `.deb` package.
 - Check the **Logs** button on the landing page for backend error messages.
 
+### Connectivity pill — what each colour means
+The pill in the top-right of the title bar shows your live link to elabFTW:
+
+| Tone | Meaning |
+|------|---------|
+| Mint dot | elabFTW reachable; sub shows current latency |
+| Amber pulsing dot | one or more requests in flight (uploads, syncs); sub shows count |
+| Coral dot | elabFTW unreachable |
+| Neutral dot | first check in progress |
+
+Click the pill to open a popup with the server URL, version, last sync time, the most recent error (if any), and a recent-activity log.
+
+## Report a bug
+
+Click **Report a bug** in the title bar (the small life-buoy icon next to the dark-mode toggle). Type what happened, optionally attach the recent backend log, and **Send report**. The report is forwarded to the maintainer's private GitHub issue tracker — the in-app dialog shows a tracking ID on success.
+
+If the maintainer's relay is unreachable (no network, expired token, forked install) the report is kept locally in `data/feedback.jsonl` so it isn't lost.
+
+---
+
+## Development quick-start
+
+**Toolchain:** Python 3.11+ and **Node 22 LTS** (the repo pins `.nvmrc` to `22`; the frontend requires Node ≥ 20.19 for Vite 8 / Vitest 4). With `nvm`: `nvm use` picks up `.nvmrc`.
+
+```bash
+# 0. Match the pinned Node version (nvm)
+nvm install && nvm use     # reads .nvmrc → Node 22
+
+# 1. Clone and enter the repo
+git clone <repo-url> && cd elab-agent
+
+# 2. Python backend (runs on port 3000)
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+./start.sh
+
+# 3. Frontend hot-reload (port 5173, proxies API to :3000)
+cd frontend && npm install && npm run dev
+
+# 4. Full checks before committing
+./scripts/check.sh          # pytest + bandit + pip-audit
+cd frontend && npm run lint && npm run test
+
+# 5. Desktop build
+bash build-desktop.sh       # Linux AppImage + .deb (requires build deps)
+
+# 6. Electron-builder targets (npm scripts; require a prior PyInstaller bundle)
+npm run electron            # launch the Electron app against an existing build
+npm run electron:dev        # launch with ELECTRON_DEV=1 (hot-reloads against the Vite dev server)
+npm run dist:linux          # electron-builder → AppImage + .deb
+npm run dist:win            # electron-builder → NSIS + portable .exe (cross-platform)
+npm run dist:mac            # electron-builder → DMG + zip (macOS only)
+npm run dist:all            # all three targets in one go; macOS slice still macOS-only
+```
+
+Cross-platform notes for `dist:win`/`dist:mac` live in `.claude/skills/electron.md`.
+
+For CSS-cleanup PRs that need a visual regression baseline, the repo ships
+`frontend/scripts/capture-themes.mjs` (Playwright + headless Chromium). With a
+dev server running it writes 24 PNGs covering 4 reachable pages × 3 themes ×
+2 modes — run before and after a CSS edit and `md5sum` the two folders.
+Screenshots are gitignored.
+
+Optional env vars (set in `.env` for dev, or in the build environment for distributed binaries):
+
+| Variable | Purpose |
+|----------|---------|
+| `ELAB_SERVER_URL` | elabFTW base URL (also configurable via the in-app setup wizard) |
+| `ANTHROPIC_API_KEY` | enables AI tag suggestions |
+| `FEEDBACK_GITHUB_PAT` | fine-grained PAT (`Issues: write` on one private repo) — bug-report sink. Omit to keep reports local-only in `data/feedback.jsonl`. |
+| `FEEDBACK_GITHUB_REPO` | override the default feedback repo (`N3k0cch1/elab-agent-feedback`) |
+| `EDITION` | `full` (default) or `upload_only`. Legacy `personal`/`community` values are auto-migrated. |
+
+### Architecture
+
+```
+elab-agent/
+├── backend/           FastAPI server — all elabFTW API calls, parsers, AI enrichment
+│   ├── main.py        Route definitions (thin layer — no business logic)
+│   ├── elab_client.py All outbound elabFTW HTTP calls (httpx, async, retry)
+│   ├── parsers/       Word / PDF parsing, upload session store
+│   └── enrichment.py  Anthropic tag suggestions
+├── frontend/          React + Vite SPA
+│   └── src/
+│       ├── components/ ReviewPanel, PDFReviewPanel, ExperimentDropdown, …
+│       ├── context/   AppConfigContext, HistoryContext
+│       └── pages/     LandingPage, BenchPage, HistoryPage, …
+├── electron/          Desktop wrapper (main.js + preload.js)
+└── tests/             pytest suite (300+ tests; see `.claude/skills/tester-agent.md` for live counts)
+```
+
+Key architecture decisions are documented in [DECISIONS.md](DECISIONS.md).
+
 ---
 
 ## About
@@ -276,4 +389,4 @@ Backend: Python (FastAPI + PyInstaller). Frontend: React + Vite. Desktop: Electr
 
 [elabFTW](https://www.elabftw.net/) is open-source ELN software — this tool is an independent companion, not affiliated with the elabFTW project.
 
-Contact the owner for any bugs or reports.
+To report a bug, use the **Report a bug** button inside the app — it forwards privately to the maintainer's tracker, with optional log attachment.
